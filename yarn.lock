@@ -1052,6 +1052,16 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@expo-google-fonts/dm-sans@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/dm-sans/-/dm-sans-0.2.2.tgz#66bfead953b9ab03ad029bfc19a882ee1f731416"
+  integrity sha512-N3bBC9igoebddvQ6+0mnmRV3OF0CtzT/NSzrztWZ7cez1oG6MplA/7e1EMKyGGkhdCUNwjqDJOk+ggEzFyz7KQ==
+
+"@expo-google-fonts/dm-serif-display@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/dm-serif-display/-/dm-serif-display-0.2.2.tgz#288903efb22c516b728a40f16dc6ffb3dd0f3b39"
+  integrity sha512-Yi0+9lIoE6dp+m+KvcE9RoSurBjk6Ci2Xx8y8ATjWx0xujKepT+hRWcSuahbaZhPd5vWI5V4DrybOUZT74p4Tw==
+
 "@expo/config-plugins@4.0.16", "@expo/config-plugins@^4.0.2":
   version "4.0.16"
   resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-4.0.16.tgz#832fb533245180c6dfd82fd359474f68a8e857b2"
