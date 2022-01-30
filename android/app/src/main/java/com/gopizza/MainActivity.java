@@ -8,6 +8,7 @@ import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 
 import expo.modules.ReactActivityDelegateWrapper;
+import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 
 public class MainActivity extends ReactActivity {
   @Override
@@ -28,11 +29,14 @@ public class MainActivity extends ReactActivity {
     return "main";
   }
 
-  @Override
+ @Override
   protected ReactActivityDelegate createReactActivityDelegate() {
-    return new ReactActivityDelegateWrapper(this,
-      new ReactActivityDelegate(this, getMainComponentName())
-    );
+    return new ReactActivityDelegate(this, getMainComponentName ()) {
+    @Override
+    protected ReactRootView createRootView() {
+    return new RNGestureHandlerEnabledRootView (MainActivity. this);
+      }
+    };
   }
 
   /**
@@ -54,4 +58,6 @@ public class MainActivity extends ReactActivity {
     // because it's doing more than {@link Activity#moveTaskToBack} in fact.
     super.invokeDefaultOnBackPressed();
   }
+
+  
 }

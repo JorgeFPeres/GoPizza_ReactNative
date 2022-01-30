@@ -7,6 +7,7 @@ import { StatusBar } from 'expo-status-bar'
 import { ThemeProvider } from 'styled-components/native'
 import { AuthProvider } from '@hooks/auth'
 import theme from './src/theme'
+import { Text } from 'react-native'
 
 import { SignIn } from '@screens/SignIn'
 
@@ -17,7 +18,7 @@ export default function App() {
   })
 
   if (!fontsLoaded) {
-    return <AppLoading />
+    return <Text>Loading</Text>
   }
 
   return (
