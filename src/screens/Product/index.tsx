@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Platform, TouchableOpacity, ScrollView } from 'react-native'
+import * as ImagePicker from 'expo-image-picker'
 import {
   Container,
   Header,
@@ -20,6 +21,27 @@ import { Input } from '@components/Input'
 import { Button } from '@components/Button'
 
 export function Product() {
+  const [image, setImage] = useState('')
+  const [name, setName] = useState('')
+  const [description, setDescription] = useState('')
+  const [priceSizeP, setPriceSizeP] = useState('')
+  const [priceSizeM, setPriceSizeM] = useState('')
+  const [priceSizeG, setPriceSizeG] = useState('')
+  const [isLoading, setisLoading] = useState(false)
+
+  async function handlePickerImage() {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+    if (status === 'granted') {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        aspect: [4, 4],
+      })
+      if (!result.cancelled) {
+        setImage(result.uri)
+      }
+    }
+  }
+
   return (
     <Container behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -31,8 +53,12 @@ export function Product() {
           </TouchableOpacity>
         </Header>
         <Upload>
-          <Photo uri='' />
-          <PickImageButton title='Carregar' type='secondary' />
+          <Photo uri={image} />
+          <PickImageButton
+            title='Carregar'
+            type='secondary'
+            onPress={handlePickerImage}
+          />
         </Upload>
 
         <Form>
