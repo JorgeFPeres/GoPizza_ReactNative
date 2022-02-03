@@ -21,7 +21,7 @@
 <br>
 
 <p align="center">
-  <img alt="GoPizza" src="src/assets/image.png">
+  <img alt="GoPizza" src="src/assets/img.png">
 </p>
 
 ## 🧪 Technologies
