@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
-import { Platform, TouchableOpacity, ScrollView } from 'react-native'
+import { Platform, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import * as ImagePicker from 'expo-image-picker'
+
+import firestore from '@react-native-firebase/firestore'
+import storage from '@react-native-firebase/storage'
 import {
   Container,
   Header,
@@ -27,7 +30,7 @@ export function Product() {
   const [priceSizeP, setPriceSizeP] = useState('')
   const [priceSizeM, setPriceSizeM] = useState('')
   const [priceSizeG, setPriceSizeG] = useState('')
-  const [isLoading, setisLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   async function handlePickerImage() {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
@@ -40,6 +43,48 @@ export function Product() {
         setImage(result.uri)
       }
     }
+  }
+
+  async function handleAdd() {
+    if (!name.trim()) {
+      return Alert.alert('Cadastro', 'Informe o nome da pizza')
+    }
+    if (!description.trim()) {
+      return Alert.alert('Cadastro', 'Informe uma descrição')
+    }
+    if (!image) {
+      return Alert.alert('Cadastro', 'Selecione a imagem da pizza')
+    }
+    if (!priceSizeP || !priceSizeM || !priceSizeG) {
+      return Alert.alert('Cadastro', 'Informe o preço de todos os tamsnhos')
+    }
+
+    setIsLoading(true)
+    const fileName = new Date().getTime()
+    const reference = storage().ref(`/pizzas/${fileName}.png`)
+    await reference.putFile(image)
+    const photo_url = await reference.getDownloadURL()
+
+    firestore()
+      .collection('pizzas')
+      .add({
+        name,
+        name_insensitive: name.toLowerCase().trim(),
+        description,
+        prices_size: {
+          p: priceSizeP,
+          m: priceSizeM,
+          g: priceSizeG,
+        },
+        photo_url,
+        photo_path: reference.fullPath,
+      })
+      .then(() => Alert.alert('Cadastro', 'Pizza cadastrado com sucesso'))
+      .catch(() =>
+        Alert.alert('Cadastro', 'Não foi possível cadastrar a pizza')
+      )
+
+    setIsLoading(false)
   }
 
   return (
@@ -64,22 +109,44 @@ export function Product() {
         <Form>
           <InputGroup>
             <Label>Nome</Label>
-            <Input />
+            <Input onChangeText={setName} value={name} />
           </InputGroup>
           <InputGroup>
             <InputGroupHeader>
               <Label>Descrição</Label>
               <MaxCharacteres>0 de 60</MaxCharacteres>
             </InputGroupHeader>
-            <Input multiline maxLength={60} style={{ height: 80 }} />
+            <Input
+              multiline
+              maxLength={60}
+              style={{ height: 80 }}
+              onChangeText={setDescription}
+              value={description}
+            />
           </InputGroup>
           <InputGroup>
             <Label> Tamanhos e preços</Label>
-            <InputPrice size='P' />
-            <InputPrice size='M' />
-            <InputPrice size='G' />
+            <InputPrice
+              size='P'
+              onChangeText={setPriceSizeP}
+              value={priceSizeP}
+            />
+            <InputPrice
+              size='M'
+              onChangeText={setPriceSizeM}
+              value={priceSizeM}
+            />
+            <InputPrice
+              size='G'
+              onChangeText={setPriceSizeG}
+              value={priceSizeG}
+            />
           </InputGroup>
-          <Button title='Cadastrar Pizza' />
+          <Button
+            title='Cadastrar Pizza'
+            isLoading={isLoading}
+            onPress={handleAdd}
+          />
         </Form>
       </ScrollView>
     </Container>
